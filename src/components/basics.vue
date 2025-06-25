@@ -19,6 +19,7 @@
 
     <hr />
     <h1>First char counts</h1>
+
     <input v-model="str2" placeholder="Type something..." />
     <p v-if="countChars > 10">Whoa too many chars babyBro!</p>
 
@@ -26,17 +27,22 @@
     <h1>Baby's To Do List</h1>
     <input v-model="Newtask" placeholder="Add a task..." />
     <button @click="addTodo">Add Task</button>
-    <!-- ✅ FIXED -->
+
+    <!-- <ul>
+      <li v-for="(task, index) in todoList" :key="index">
+        {{ task }}
+        <button @click="removeTodo(index)">❌</button>
+      </li>
+    </ul> -->
 
     <table class="todo-table">
       <tr v-for="(task, index) in todoList" :key="index">
         <td class="task-cell">
-          <input type="checkbox" v-model="task.done" />
           <template v-if="editingIndex === index">
             <input v-model="editingText" class="edit-input" />
           </template>
           <template v-else>
-            <span :class="{ done: task.done }">{{ task.text }}</span>
+            {{ task }}
           </template>
         </td>
         <td class="button-cell">
@@ -59,6 +65,7 @@
 <script>
 export default {
   name: "App",
+
   data() {
     return {
       count: 0,
@@ -83,10 +90,7 @@ export default {
     },
     addTodo() {
       if (this.Newtask.trim() !== "") {
-        this.todoList.push({
-          text: this.Newtask.trim(),
-          done: false,
-        });
+        this.todoList.push(this.Newtask.trim());
         this.Newtask = "";
       }
     },
@@ -95,11 +99,11 @@ export default {
     },
     editTodo(index) {
       this.editingIndex = index;
-      this.editingText = this.todoList[index].text;
+      this.editingText = this.todoList[index];
     },
     saveEdit(index) {
       if (this.editingText.trim() !== "") {
-        this.todoList[index].text = this.editingText.trim();
+        this.todoList[index] = this.editingText.trim();
         this.cancelEdit();
       }
     },
@@ -122,7 +126,6 @@ export default {
   },
 };
 </script>
-
 <style>
 input {
   padding: 10px;
@@ -132,47 +135,37 @@ input {
   width: 50%;
   vertical-align: middle;
 }
-
 .todo-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 8px;
   margin-top: 10px;
-  table-layout: fixed;
 }
-
 .task-cell {
   text-align: left;
   padding: 8px 12px;
   width: 70%;
   word-break: break-word;
-  vertical-align: middle;
 }
-
 .button-cell {
   text-align: right;
   padding: 8px 12px;
   vertical-align: middle;
-  width: 180px;
-  min-width: 180px;
+  width: 30%;
+  min-width: 160px;
   white-space: nowrap;
 }
-
 .edit-input {
   width: 90%;
+  padding: 6px;
+  vertical-align: middle;
   padding: 10px;
   border-radius: 10px;
   border: 2px solid #333;
 }
-
-td input[type="checkbox"] {
-  width: auto;
-  margin-right: 10px;
+td input {
+  width: 100%;
+  box-sizing: border-box;
   vertical-align: middle;
-}
-
-.done {
-  text-decoration: line-through;
-  color: gray;
 }
 </style>
