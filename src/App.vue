@@ -1,3 +1,72 @@
+<script>
+import shop from "./components/shop.vue";
+export default {
+  name: "App",
+  components: {
+    shop,
+  },
+  data() {
+    return {
+      count: 0,
+      str: "",
+      str2: "",
+      Newtask: "",
+      todoList: [],
+      editingIndex: null,
+      editingText: "",
+    };
+  },
+  methods: {
+    increment() {
+      this.count++;
+    },
+    decrement() {
+      this.count--;
+    },
+    reset() {
+      this.count = 0;
+    },
+    addTodo() {
+      if (this.Newtask.trim() !== "") {
+        this.todoList.push({
+          text: this.Newtask.trim(),
+          done: false,
+        });
+        this.Newtask = "";
+      }
+    },
+    removeTodo(index) {
+      this.todoList.splice(index, 1);
+    },
+    editTodo(index) {
+      this.editingIndex = index;
+      this.editingText = this.todoList[index].text;
+    },
+    saveEdit(index) {
+      if (this.editingText.trim() !== "") {
+        this.todoList[index].text = this.editingText.trim();
+        this.cancelEdit();
+      }
+    },
+    cancelEdit() {
+      this.editingIndex = null;
+      this.editingText = "";
+    },
+  },
+  computed: {
+    evenOrOdd() {
+      return this.count % 2 === 0 ? "Even" : "Odd";
+    },
+    reverseStr() {
+      return this.str.split("").reverse().join("");
+    },
+    countChars() {
+      return this.str2.length;
+    },
+  },
+};
+</script>
+
 <template>
   <div>
     <h1>Vue App</h1>
@@ -53,75 +122,12 @@
     </table>
 
     <hr />
+
+    <!-- Mount shop.vue here -->
+    <h2>Welcome to IShop</h2>
+    <shop />
   </div>
 </template>
-
-<script>
-export default {
-  name: "App",
-  data() {
-    return {
-      count: 0,
-      str: "",
-      str2: "",
-      Newtask: "",
-      todoList: [],
-      editingIndex: null,
-      editingText: "",
-    };
-  },
-
-  methods: {
-    increment() {
-      this.count++;
-    },
-    decrement() {
-      this.count--;
-    },
-    reset() {
-      this.count = 0;
-    },
-    addTodo() {
-      if (this.Newtask.trim() !== "") {
-        this.todoList.push({
-          text: this.Newtask.trim(),
-          done: false,
-        });
-        this.Newtask = "";
-      }
-    },
-    removeTodo(index) {
-      this.todoList.splice(index, 1);
-    },
-    editTodo(index) {
-      this.editingIndex = index;
-      this.editingText = this.todoList[index].text;
-    },
-    saveEdit(index) {
-      if (this.editingText.trim() !== "") {
-        this.todoList[index].text = this.editingText.trim();
-        this.cancelEdit();
-      }
-    },
-    cancelEdit() {
-      this.editingIndex = null;
-      this.editingText = "";
-    },
-  },
-
-  computed: {
-    evenOrOdd() {
-      return this.count % 2 === 0 ? "Even" : "Odd";
-    },
-    reverseStr() {
-      return this.str.split("").reverse().join("");
-    },
-    countChars() {
-      return this.str2.length;
-    },
-  },
-};
-</script>
 
 <style>
 input {
